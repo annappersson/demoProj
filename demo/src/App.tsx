@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { Route, Routes } from "react-router";
+import HomePage from "./pages/HomePage";
+
 
 function App() {
-  const [count, setCount] = useState(0);
+
 
   return (
     <>
-      <h1>Hej</h1>
+      <Routes> 
+        <Route path="/" element={<HomePage />} /> 
+
+      </Routes>
     </>
   );
 }
