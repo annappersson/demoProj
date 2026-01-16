@@ -9,6 +9,20 @@ export interface CitiesResponse {
   ];
 }
 
+export interface CityResponse {
+  Id: number;
+  guid: string;
+  name: string;
+  movie: string;
+  deleted: boolean;
+}
+
+export interface CityDetailResponse {
+  errorsException: boolean;
+  resultText: string;
+  city: CityResponse;
+}
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
@@ -32,6 +46,10 @@ const get = async <T>(endpoint: string) => {
 
 export const getCities = async () => {
   return get<CitiesResponse>(`/cities`);
+};
+
+export const getCity = async (guid: string) => {
+  return get<CityDetailResponse>(`/cities/${guid}`);
 };
 
 export default api;

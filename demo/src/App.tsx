@@ -1,22 +1,22 @@
 import { Route, Routes } from "react-router";
 import HomePage from "./pages/HomePage";
-import DashboardPage from "./pages/DashboardPage";
+import CitiesPage from "./pages/CitiesPage";
 import ProtectedRoute from "./components/auth/ProtectedRoutes";
 import { ToastContainer } from "react-toastify";
-import Navigation from "./pages/partials/Navigation";
+// import Navigation from "./pages/partials/Navigation";
 
 function App() {
   return (
     <>
-      <Navigation />
+      {/* <Navigation /> */}
       <ToastContainer />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route
-          path="/dashboard"
+          path="/cities"
           element={
             <ProtectedRoute>
-              <DashboardPage />
+              <CitiesPage />
             </ProtectedRoute>
           }
         />

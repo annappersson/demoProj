@@ -21,7 +21,7 @@ const HomePage = () => {
       localStorage.setItem("access_token", data.access_token);
 
       toast.success("Inloggning lyckades!");
-      navigate("/dashboard");
+      navigate("/cities");
     } catch (err) {
       console.error("Fel vid inloggning", err);
       toast.error("Fel användarnamn eller lösenord");
