@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import Navigation from "./pages/partials/Navigation";
 import MyPage from "./pages/MyPage";
 import ContactPage from "./pages/ContactPage";
+import "./assets/style/Main.scss";
 
 function App() {
   return (

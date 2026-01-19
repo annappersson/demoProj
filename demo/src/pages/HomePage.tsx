@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
+import "../assets/style/HomePage.scss";
 
 const HomePage = () => {
   const [username, setUsername] = useState("");
