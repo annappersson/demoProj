@@ -7,6 +7,7 @@ import Navigation from "./pages/partials/Navigation";
 import MyPage from "./pages/MyPage";
 import ContactPage from "./pages/ContactPage";
 import "./assets/style/Main.scss";
+import Footer from "./pages/partials/Footer";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/contact" element={<ContactPage />} />
       </Routes>
+      <Footer />
     </>
   );
 }
