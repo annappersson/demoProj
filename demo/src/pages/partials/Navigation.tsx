@@ -4,12 +4,14 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { useNavigate } from "react-router";
 import "../../assets/style/Navigation.scss";
+import { useAuth } from "../../hooks/useAuth";
 
 function Navigation() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.setItem("access_token", "");
+    logout();
     navigate("/");
   };
 

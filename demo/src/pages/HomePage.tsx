@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { login } from "../services/authService";
+import { login as apiLogin } from "../services/authService";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 
 const HomePage = () => {
   const [username, setUsername] = useState("");
@@ -10,6 +11,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,14 +19,19 @@ const HomePage = () => {
     setLoading(true);
 
     try {
-      const data = await login(username, password);
-      localStorage.setItem("access_token", data.access_token);
+      const data = await apiLogin(username, password);
+      login(data.access_token);
 
       toast.success("Inloggning lyckades!");
+      console.log("redirectTo from API:", data.redirectTo);
+
       if (data.redirectTo) {
-        navigate(`/${data.redirectTo}`);
+        const path = data.redirectTo.startsWith("/")
+          ? data.redirectTo
+          : `/${data.redirectTo}`;
+        navigate(path);
       } else {
-        navigate("/cities"); // fallback om API:t inte skickar redirect
+        navigate("/cities");
       }
     } catch (err) {
       console.error("Fel vid inloggning", err);
