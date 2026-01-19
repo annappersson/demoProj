@@ -52,4 +52,14 @@ export const getCity = async (guid: string) => {
   return get<CityDetailResponse>(`/cities/${guid}`);
 };
 
+export const updateCity = async (guid: string, movie: string, name: string) => {
+  const res = await api.patch(`/cities/${guid}`, { movie, name });
+  return res.data;
+};
+
+export const deleteCity = async (guid: string) => {
+  const res = await api.delete(`/cities/${guid}`);
+  return res.data;
+};
+
 export default api;
