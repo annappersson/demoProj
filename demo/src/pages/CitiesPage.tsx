@@ -14,8 +14,11 @@ import {
   Button,
   CircularProgress,
   Typography,
+  Box,
+  TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import "../assets/style/CitiesPage.scss";
 
 type cities = {
   guid: string;
@@ -91,25 +94,28 @@ const CitiesPage = () => {
       {
         accessorKey: "name",
         header: "Stad",
-        size: 80,
+        size: 150,
       },
     ],
     []
   );
 
   return (
-    <>
-      <MaterialReactTable
-        columns={columns}
-        data={cities}
-        state={{ isLoading: loading }}
-        enableColumnOrdering
-        enableGlobalFilter
-        muiTableBodyRowProps={({ row }) => ({
-          onClick: () => handleRowClick(row.original),
-          sx: { cursor: "pointer" },
-        })}
-      />
+    <Box className="cities-page">
+      <Box className="table-container">
+        <MaterialReactTable
+          columns={columns}
+          data={cities}
+          state={{ isLoading: loading }}
+          enableColumnOrdering
+          enableGlobalFilter
+          muiTableBodyRowProps={({ row }) => ({
+            onClick: () => handleRowClick(row.original),
+            sx: { cursor: "pointer" }, // kan behålla inline för små tweaks
+          })}
+        />
+      </Box>
+
       <Dialog
         open={modalOpen}
         onClose={() => setModalOpen(false)}
@@ -118,29 +124,24 @@ const CitiesPage = () => {
       >
         <DialogTitle>Stadsinformation</DialogTitle>
 
-        <DialogContent dividers>
+        <DialogContent dividers className="dialog-content">
           {loadingCity ? (
-            <div
-              style={{ display: "flex", justifyContent: "center", padding: 20 }}
-            >
+            <Box className="loading-container">
               <CircularProgress />
-            </div>
+            </Box>
           ) : selectedCity ? (
             <>
               <Typography>
                 <strong>Namn:</strong> {selectedCity.name}
               </Typography>
-              <div style={{ marginTop: 10 }}>
-                <label>
-                  <strong>Movie:</strong>
-                </label>
-                <input
-                  type="text"
-                  value={editedMovie}
-                  onChange={(e) => setEditedMovie(e.target.value)}
-                  style={{ width: "100%", padding: 4, marginTop: 4 }}
-                />
-              </div>
+
+              <TextField
+                label="Movie"
+                value={editedMovie}
+                onChange={(e) => setEditedMovie(e.target.value)}
+                fullWidth
+              />
+
               <Typography>
                 <strong>GUID:</strong> {selectedCity.guid}
               </Typography>
@@ -166,7 +167,7 @@ const CitiesPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </Box>
   );
 };
 
