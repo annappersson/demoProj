@@ -11,24 +11,26 @@ import Footer from "./pages/partials/Footer";
 
 function App() {
   return (
-    <>
+    <div className="app-layout">
       <Navigation />
       <ToastContainer />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route
-          path="/cities"
-          element={
-            <ProtectedRoute>
-              <CitiesPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-      </Routes>
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/cities"
+            element={
+              <ProtectedRoute>
+                <CitiesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
+      </main>
       <Footer />
-    </>
+    </div>
   );
 }
 
