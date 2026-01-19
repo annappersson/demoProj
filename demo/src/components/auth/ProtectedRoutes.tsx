@@ -1,7 +1,5 @@
 import { Navigate } from "react-router";
-import { useAuth } from "../../context/AuthContext.tsx";
-// import { useEffect, useState } from "react";
-// import { toast } from "react-toastify";
+import { useAuth } from "../../hooks/useAuth";
 import type { JSX } from "react";
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {

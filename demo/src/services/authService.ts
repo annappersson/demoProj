@@ -2,6 +2,7 @@ import api from "./demoAPI";
 
 export interface LoginResponse {
   access_token: string;
+  redirectTo?: string;
 }
 
 export async function login(username: string, password: string) {

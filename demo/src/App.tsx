@@ -4,6 +4,8 @@ import CitiesPage from "./pages/CitiesPage";
 import ProtectedRoute from "./components/auth/ProtectedRoutes";
 import { ToastContainer } from "react-toastify";
 import Navigation from "./pages/partials/Navigation";
+import MyPage from "./pages/MyPage";
+import ContactPage from "./pages/ContactPage";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </>
   );
