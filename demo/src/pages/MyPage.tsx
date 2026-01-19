@@ -5,11 +5,11 @@ import {
   TextField,
   Typography,
   Paper,
-  CircularProgress,
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { updateUserProfile } from "../services/demoAPI";
 import { useAuth } from "../hooks/useAuth";
+import GlobalLoadingSpinner from "../components/GlobalLoadingSpinner";
 
 const MyPage = () => {
   const [loaded, setLoaded] = useState(false);
@@ -23,6 +23,7 @@ const MyPage = () => {
   const [newPassword, setNewPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (!user) return;
 
@@ -69,6 +70,7 @@ const MyPage = () => {
 
   return (
     <Box display="flex" justifyContent="center" alignItems="flex-start" mt={6}>
+      <GlobalLoadingSpinner isLoading={loading} />
       <Paper sx={{ p: 4, width: 400 }}>
         <Typography variant="h5" mb={3}>
           Min profil
@@ -136,7 +138,7 @@ const MyPage = () => {
             sx={{ mt: 3 }}
             disabled={loading}
           >
-            {loading ? <CircularProgress size={24} /> : "Spara ändringar"}
+            Spara ändringar
           </Button>
         </form>
       </Paper>

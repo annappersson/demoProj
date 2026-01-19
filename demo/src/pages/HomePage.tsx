@@ -5,6 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 import "../assets/style/HomePage.scss";
+// 1. Importera din spinner
+import GlobalLoadingSpinner from "../components/GlobalLoadingSpinner";
 
 const HomePage = () => {
   const [username, setUsername] = useState("");
@@ -38,13 +40,17 @@ const HomePage = () => {
       console.error("Fel vid inloggning", err);
       toast.error("Fel användarnamn eller lösenord");
       setError("Fel användarnamn eller lösenord");
+      setLoading(false); // Viktigt: Sluta ladda om det skiter sig
     }
-
-    setLoading(false);
+    // Tips: Om navigate körs direkt kan det vara bra att låta loading 
+    // vara true tills sidan faktiskt byts.
   };
 
   return (
     <div className="container min-vh-100 d-flex align-items-center justify-content-center">
+      {/* 2. Lägg in spinnern här */}
+      <GlobalLoadingSpinner isLoading={loading} />
+
       <div className="row w-100 justify-content-center">
         <div className="col-12 col-sm-10 col-md-6 col-lg-4">
           <div className="card shadow-lg border-0">

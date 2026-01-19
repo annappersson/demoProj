@@ -12,21 +12,22 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  CircularProgress,
   Typography,
   Box,
   TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
 import "../assets/style/CitiesPage.scss";
+import GlobalLoadingSpinner from "../components/GlobalLoadingSpinner";
 
-type cities = {
+type City = {
   guid: string;
   name: string;
+  movie?: string;
 };
 
 const CitiesPage = () => {
-  const [cities, setCities] = useState<cities[]>([]);
+  const [cities, setCities] = useState<City[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCity, setSelectedCity] = useState<any | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -36,10 +37,11 @@ const CitiesPage = () => {
   useEffect(() => {
     getCities()
       .then((res) => setCities(res.cities))
+      .catch(() => toast.error("Kunde inte hämta städer"))
       .finally(() => setLoading(false));
   }, []);
 
-  const handleRowClick = async (city: cities) => {
+  const handleRowClick = async (city: City) => {
     setLoadingCity(true);
     setModalOpen(true);
 
@@ -47,6 +49,10 @@ const CitiesPage = () => {
       const res = await getCity(city.guid);
       setSelectedCity(res.city);
       setEditedMovie(res.city.movie || "");
+    } catch (err) {
+      console.error(err);
+      toast.error("Kunde inte hämta detaljer för staden");
+      setModalOpen(false);
     } finally {
       setLoadingCity(false);
     }
@@ -59,7 +65,6 @@ const CitiesPage = () => {
       await updateCity(selectedCity.guid, editedMovie, selectedCity.name);
       toast.success("Movie uppdaterad!");
 
-      // uppdatera listan direkt
       setCities((prev) =>
         prev.map((c) =>
           c.guid === selectedCity.guid ? { ...c, movie: editedMovie } : c
@@ -72,16 +77,16 @@ const CitiesPage = () => {
       toast.error("Kunde inte uppdatera movie");
     }
   };
+
   const handleDelete = async () => {
     if (!selectedCity) return;
+    if (!window.confirm(`Är du säker på att du vill ta bort ${selectedCity.name}?`)) return;
 
     try {
       await deleteCity(selectedCity.guid);
       toast.success("City borttagen!");
 
-      // ta bort city från listan direkt
       setCities((prev) => prev.filter((c) => c.guid !== selectedCity.guid));
-
       setModalOpen(false);
     } catch (err) {
       console.error(err);
@@ -89,7 +94,7 @@ const CitiesPage = () => {
     }
   };
 
-  const columns = useMemo<MRT_ColumnDef<cities>[]>(
+  const columns = useMemo<MRT_ColumnDef<City>[]>(
     () => [
       {
         accessorKey: "name",
@@ -102,16 +107,17 @@ const CitiesPage = () => {
 
   return (
     <Box className="cities-page">
-      <Box className="table-container">
+      <GlobalLoadingSpinner isLoading={loading} />
+
+      <Box className="table-container" sx={{ mt: 2 }}>
         <MaterialReactTable
           columns={columns}
           data={cities}
-          state={{ isLoading: loading }}
           enableColumnOrdering
           enableGlobalFilter
           muiTableBodyRowProps={({ row }) => ({
             onClick: () => handleRowClick(row.original),
-            sx: { cursor: "pointer" }, // kan behålla inline för små tweaks
+            sx: { cursor: "pointer" },
           })}
         />
       </Box>
@@ -124,14 +130,14 @@ const CitiesPage = () => {
       >
         <DialogTitle>Stadsinformation</DialogTitle>
 
-        <DialogContent dividers className="dialog-content">
+        <DialogContent dividers>
           {loadingCity ? (
-            <Box className="loading-container">
-              <CircularProgress />
+            <Box display="flex" justifyContent="center" p={4}>
+              <GlobalLoadingSpinner isLoading={loadingCity} />
             </Box>
           ) : selectedCity ? (
-            <>
-              <Typography>
+            <Box display="flex" flexDirection="column" gap={2} py={2}>
+              <Typography variant="body1">
                 <strong>Namn:</strong> {selectedCity.name}
               </Typography>
 
@@ -140,18 +146,19 @@ const CitiesPage = () => {
                 value={editedMovie}
                 onChange={(e) => setEditedMovie(e.target.value)}
                 fullWidth
+                variant="outlined"
               />
 
-              <Typography>
+              <Typography variant="caption" color="textSecondary">
                 <strong>GUID:</strong> {selectedCity.guid}
               </Typography>
-            </>
+            </Box>
           ) : (
             <Typography>Ingen data hittades.</Typography>
           )}
         </DialogContent>
 
-        <DialogActions>
+        <DialogActions sx={{ p: 2 }}>
           <Button onClick={handleUpdate} variant="contained" color="primary">
             Uppdatera
           </Button>
@@ -161,7 +168,7 @@ const CitiesPage = () => {
           <Button
             onClick={() => setModalOpen(false)}
             variant="contained"
-            color="secondary"
+            color="inherit"
           >
             Stäng
           </Button>
