@@ -93,11 +93,6 @@ const CitiesPage = () => {
         header: "Stad",
         size: 80,
       },
-      {
-        accessorKey: "movie",
-        header: "Film",
-        size: 80,
-      },
     ],
     []
   );

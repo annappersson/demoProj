@@ -62,4 +62,9 @@ export const deleteCity = async (guid: string) => {
   return res.data;
 };
 
+export const updateUserProfile = async (payload: any) => {
+  const res = await api.patch("/user", payload);
+  return res.data;
+};
+
 export default api;
